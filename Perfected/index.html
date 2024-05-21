@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Choose Your Character</title>
+    <link rel="stylesheet" href="" />
+    <style></style>
+  </head>
+  <body>
+    <audio id="backgroundMusic" autoplay loop>
+      <source src="/11 tiger legend [SAGAT].mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+
+    <div class="background"></div>
+
+    <div class="header">
+      <h1 class="header-text">Choose Your Character</h1>
+    </div>
+    <div class="container">
+      <div class="character-card" onclick="startGame('Abaddon')">
+        <img src="/Abaddon.jpeg" alt="Abaddon" />
+        <h2>Abaddon</h2>
+        <p>Attack: 8</p>
+        <p>Defense: 7</p>
+        <p>Health: 9</p>
+      </div>
+      <div class="character-card" onclick="startGame('Bahamut')">
+        <img src="Bahamut.jpeg" alt="Bahamut" />
+        <h2>Bahamut</h2>
+        <p>Attack: 10</p>
+        <p>Defense: 9</p>
+        <p>Health: 8</p>
+      </div>
+      <div class="character-card" onclick="startGame('Ken')">
+        <img src="/ken.jpeg" alt="Ken" />
+        <h2>Ken</h2>
+        <p>Attack: 7</p>
+        <p>Defense: 6</p>
+        <p>Health: 7</p>
+      </div>
+    </div>
+    <div class="footer">
+      <audio controls autoplay loop style="display: none">
+        <source src="/11 tiger legend [SAGAT].mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+
+    <div class="level-background" id="levelBackground">
+      <h1 class="level-heading">LEVEL 1 FIGHT!</h1>
+    </div>
+
+    <div class="win-background" id="winBackground">
+      <h1 class="win-heading">You Win!</h1>
+    </div>
+
+    <div class="dci-background" id="dciBackground">
+      <h1 class="dci-heading">Go Code</h1>
+    </div>
+
+    <div id="customPrompt" class="custom-prompt">
+      <div class="custom-prompt-content">
+        <p id="promptMessage"></p>
+        <input type="text" id="promptInput" />
+        <button onclick="submitPrompt()">OK</button>
+        <button onclick="cancelPrompt()">Cancel</button>
+      </div>
+    </div>
+    <style>
+      .level-background {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Full viewport height */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-image: url("/Level2.jpeg");
+        background-size: cover;
+        background-position: center;
+        z-index: -2;
+        display: none; /* Initially hidden */
+      }
+
+      .level-heading {
+        font-size: 4em;
+        color: yellow;
+        text-align: center;
+        animation: fadeOut 3s ease-in forwards; /* Fade out over 3 seconds */
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+      .custom-prompt {
+        display: none; /* Hidden by default */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.5
+        ); /* Black background with transparency */
+        justify-content: center;
+        align-items: center;
+      }
+
+      .custom-prompt-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 300px;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        overflow-x: hidden;
+      }
+
+      .header {
+        text-align: center;
+        padding: 20px;
+        color: rgb(240, 239, 236);
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        justify-content: center;
+        align-items: stretch;
+        margin-top: 20vh;
+      }
+
+      .character-card {
+        background-color: rgba(196, 10, 10, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 5px solid black;
+        cursor: pointer;
+      }
+
+      .character-card img {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+
+      .character-card h2 {
+        margin-top: 10px;
+      }
+
+      .character-card p {
+        margin: 5px 0;
+      }
+
+      .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("/ForestFires.jpg");
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+      }
+
+      .win-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("/Streetfighter.jpeg");
+        background-size: cover;
+        background-position: center;
+        z-index: -2;
+        display: none; /* initially hidden */
+      }
+
+      .dci-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("/Losescreen.jpeg");
+        background-size: cover;
+        background-position: center;
+        z-index: -2;
+        display: none; /* initially hidden */
+      }
+
+      .win-heading,
+      .dci-heading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 4em;
+        text-align: center;
+      }
+
+      .win-heading {
+        color: yellow;
+        text-shadow: 2px 2px 4px #000000;
+      }
+
+      .dci-heading {
+        color: white;
+      }
+
+      /* Class to hide header text */
+      .hide {
+        display: none;
+      }
+
+      /* Custom Prompt Box Styles */
+      .custom-prompt {
+        display: none; /* Hidden by default */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.5
+        ); /* Black background with transparency */
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+      }
+
+      .custom-prompt-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 300px;
+      }
+
+      #promptInput {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+      }
+    </style>
+    <script>
+      function startGame(character) {
+        let attempts = 0;
+        const randomNumber = Math.floor(Math.random() * 3) + 1;
+
+        document.querySelector(".background").style.display = "none";
+        document.querySelector(".level-background").style.display = "block";
+        document.querySelector(".container").style.display = "none";
+        document.querySelector(".header-text").classList.add("hide");
+
+        const audio = document.getElementById("backgroundMusic");
+        audio.play();
+
+        setTimeout(function () {
+          const fightAudio = new Audio("/fight-101soundboards.mp3");
+          fightAudio.play();
+          fightAudio.onended = function () {
+            function attackRound() {
+              attempts++;
+              showCustomPrompt(
+                "Attempt " + attempts + ": Guess a number between 1 and 3:",
+                function (guess) {
+                  guess = parseInt(guess);
+                  if (guess === randomNumber) {
+                    document.querySelector(".level-background").style.display =
+                      "none";
+                    document.querySelector(".win-background").style.display =
+                      "block";
+                    const winAudio = new Audio(
+                      "/you-win-street-fighter-101soundboards.mp3"
+                    );
+                    winAudio.play();
+
+                    setTimeout(function () {
+                      window.location.href = "index.html";
+                    }, 5000);
+                  } else {
+                    if (attempts < 3) {
+                      alert("Sorry, that's not correct. Try again!");
+                      attackRound();
+                    } else {
+                      gameOver();
+                    }
+                  }
+                }
+              );
+            }
+
+            attackRound();
+          };
+        }, 1000);
+      }
+
+      function showCustomPrompt(message, callback) {
+        document.getElementById("promptMessage").innerText = message;
+        document.getElementById("customPrompt").style.display = "flex";
+        window.customPromptCallback = callback;
+      }
+
+      function submitPrompt() {
+        const promptInput = document.getElementById("promptInput").value;
+        closePrompt();
+        if (window.customPromptCallback) {
+          window.customPromptCallback(promptInput);
+        }
+      }
+
+      function cancelPrompt() {
+        closePrompt();
+        gameOver();
+      }
+
+      function closePrompt() {
+        document.getElementById("customPrompt").style.display = "none";
+        document.getElementById("promptInput").value = "";
+      }
+
+      function gameOver() {
+        alert("Sorry, you've used all your attempts. Game over!");
+        const loseAudio = new Audio("/you-lose-101soundboards.mp3");
+        loseAudio.play();
+
+        document.querySelector(".level-background").style.display = "none";
+        document.querySelector(".dci-background").style.display = "block";
+
+        setTimeout(function () {
+          window.location.href = "index.html";
+        }, 5000);
+      }
+    </script>
+  </body>
+</html>
