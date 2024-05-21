@@ -174,13 +174,7 @@
     z-index: 1;
   }
   
-  .custom-prompt-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 300px;
-  }
+  
   
   #promptInput {
     width: 100%;
